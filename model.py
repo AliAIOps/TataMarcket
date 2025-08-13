@@ -7,7 +7,6 @@ from pytorch_forecasting.metrics import QuantileLoss
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint
 
-# --- خواندن و پیش‌پردازش داده‌ها ---
 data = pd.read_csv("data/simulated_innovatemart_daily_sales.csv")
 data["Date"] = pd.to_datetime(data["Date"])
 data = data.sort_values(["store_id", "Date"])
@@ -89,7 +88,6 @@ class TftLightning(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate)
 
-# --- ایجاد wrapper و Trainer ---
 tft_lightning = TftLightning(tft_model, learning_rate=0.03)
 checkpoint_callback = ModelCheckpoint(
     dirpath="./checkpoints",
@@ -109,7 +107,6 @@ trainer = Trainer(
 
 trainer.fit(tft_lightning, train_dataloader, val_dataloader)
 
-# --- لود بهترین مدل wrapper ---
 best_model_path = checkpoint_callback.best_model_path
 best_lightning_model = TftLightning.load_from_checkpoint(
     best_model_path,
