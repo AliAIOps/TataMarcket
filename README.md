@@ -24,7 +24,7 @@ This project simulates daily sales for **InnovateMart** stores and trains a **Te
 ---
 
 ## Screenshot
-![UI Screenshot](data\UI.png)  
+![UI Screenshot](data/UI.png)  
 ---
 
 ## Installation(Step1)
