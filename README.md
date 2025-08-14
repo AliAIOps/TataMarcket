@@ -63,6 +63,7 @@ cities = {
     "Isfahan": 1570860,
     ...
 }
+```
 ### 2. public_cfg
 General configuration settings for data paths, model parameters, and date ranges.
 
