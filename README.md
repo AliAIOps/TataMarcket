@@ -59,7 +59,13 @@ python generate_data.py --n_stores 5 --start_date 2022-01-01 --end_date 2024-12-
 
 ## Train TFT Model(Step3)
 ``` bash
-python model.py --n_stores 5 --start_date 2022-01-01 --end_date 2024-12-31 --save ./checkpoints
+python model.py --data_path data/simulated_innovatemart_daily_sales.csv \
+                          --save_dir checkpoints \
+                          --encoder_len 30 \
+                          --pred_len 7 \
+                          --train_ratio 0.8 \
+                          --batch_size 512 \
+                          --max_epochs 10
 ```
 * Model is trained for all stores together
 * Best model checkpoint is saved in BEST_CHECKPOINT.txt
