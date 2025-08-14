@@ -34,7 +34,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_forecasting import TemporalFusionTransformer, TimeSeriesDataSet
 from pytorch_forecasting.data import GroupNormalizer
 from pytorch_forecasting.metrics import QuantileLoss
-
+from config import public_cfg, train_cfg
 
 def set_seed(seed: int = 42) -> None:
     """
@@ -242,7 +242,7 @@ def build_model(
         attention_head_size=4,
         dropout=0.1,
         hidden_continuous_size=8,
-        output_size=pred_len,           # **number of quantiles**
+        output_size=pred_len,
         loss=QuantileLoss(quantiles=quantiles),
         log_interval=10,
         reduce_on_plateau_patience=4,
@@ -285,18 +285,21 @@ def parse_args() -> argparse.Namespace:
     argparse.Namespace
         Parsed arguments.
     """
+
+    
     parser = argparse.ArgumentParser(description="Train a TFT model on InnovateMart simulated sales")
-    parser.add_argument("--data_path", type=str, default="data/simulated_innovatemart_daily_sales.csv", help="Path to simulated CSV.")
-    parser.add_argument("--save_dir", type=str, default="checkpoints", help="Directory to save checkpoints/configs.")
-    parser.add_argument("--encoder_len", type=int, default=30, help="Max encoder (lookback) length.")
-    parser.add_argument("--pred_len", type=int, default=7, help="Forecast horizon (max prediction length).")
-    parser.add_argument("--train_ratio", type=float, default=0.8, help="Percent of rows for training (0-1).")
-    parser.add_argument("--batch_size", type=int, default=512, help="Batch size.")
-    parser.add_argument("--max_epochs", type=int, default=10, help="Max training epochs.")
+    parser.add_argument("--data_path", type=str, default=public_cfg['DATA_PATH'], help="Path to simulated CSV.")
+    parser.add_argument("--save_dir", type=str, default=public_cfg['BEST_CHECKPOINT_FILE'], help="Directory to save checkpoints/configs.")
+    parser.add_argument("--encoder_len", type=int, default=public_cfg['MAX_ENCODER_LENGTH'], help="Max encoder (lookback) length.")
+    parser.add_argument("--pred_len", type=int, default=public_cfg['PRED_HORIZON'], help="Forecast horizon (max prediction length).")
+    parser.add_argument("--train_ratio", type=float, default=train_cfg['TRAIN_RATIO'], help="Percent of rows for training (0-1).")
+    parser.add_argument("--batch_size", type=int, default=train_cfg['BATCH_SIZE'] , help="Batch size.")
+    parser.add_argument("--max_epochs", type=int, default=train_cfg['MAX_EPOCHS'] , help="Max training epochs.")
     parser.add_argument("--seed", type=int, default=42, help="Random seed.")
     parser.add_argument("--gpus", type=int, default=1, help="#GPUs to use if available (0 for CPU).")
-    parser.add_argument("--quantiles", type=float, nargs="+", default=[0.1, 0.5, 0.9], help="Quantiles for QuantileLoss.")
+    parser.add_argument("--quantiles", type=float, nargs="+", default=public_cfg["QUANTILES"], help="Quantiles for QuantileLoss.")
     return parser.parse_args()
+
 
 
 def main() -> None:
@@ -306,7 +309,10 @@ def main() -> None:
     args = parse_args()
     set_seed(args.seed)
 
-    data_path = Path(args.data_path)
+    if args.data_path.endswith('.csv'):
+        data_path = Path(args.data_path)
+    else:
+        data_path = Path(args.data_path, 'simulated_innovatemart_daily_sales.csv')
     save_dir = Path(args.save_dir)
 
     # ---------------- Load & prepare data ----------------

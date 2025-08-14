@@ -27,3 +27,17 @@ cities = {
             "Yazd": 529673,
             "Zanjan": 429000
         }
+public_cfg = {"DATA_PATH" : "data",
+              "BEST_CHECKPOINT_FILE" : "checkpoints",
+              "NUM_STORES" : 5, 
+              "START_DATE" : "2022-01-01",
+              "END_DATE" : "2024-12-31",
+              "COMPETITOR_DATE" : "2023-06-15",
+              "MAX_ENCODER_LENGTH" : 30,
+              "PRED_HORIZON" : 7,
+              "QUANTILES" : [0.1, 0.5, 0.9]
+              }
+train_cfg = {'TRAIN_RATIO' : 0.8,
+             'BATCH_SIZE' : 512,
+             'MAX_EPOCHS' : 2,
+            }

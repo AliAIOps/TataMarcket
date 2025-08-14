@@ -21,6 +21,8 @@ from pytorch_forecasting import TemporalFusionTransformer
 from pytorch_forecasting.data import TimeSeriesDataSet, GroupNormalizer
 import plotly.graph_objects as go
 import os
+from config import public_cfg
+from model import build_model
 
 
 
@@ -132,7 +134,6 @@ def predict_validation(store_id):
             for batch_pred in out:
                 preds.extend(batch_pred)
 
-    # مقادیر واقعی validation
     val_dates = data[store_mask]["Date"].values[-len(preds):]
     actuals = data[store_mask]["daily_sales"].values[-len(preds):]
 
@@ -141,15 +142,15 @@ def predict_validation(store_id):
 
 
 
+if public_cfg['DATA_PATH'].endswith('.csv'):
+    DATA_PATH = public_cfg['DATA_PATH']
+else:
+    DATA_PATH = os.path.join(public_cfg['DATA_PATH'], 'simulated_innovatemart_daily_sales.csv')
+BEST_CHECKPOINT_FILE = os.path.join(public_cfg['BEST_CHECKPOINT_FILE'], "BEST_CHECKPOINT.txt")
+MAX_ENCODER_LENGTH = public_cfg['MAX_ENCODER_LENGTH']
+PRED_HORIZON = public_cfg['PRED_HORIZON']
+QUANTILES = public_cfg["QUANTILES"]
 
-
-
-
-# ------------------ Config ------------------
-DATA_PATH = "data/simulated_innovatemart_daily_sales.csv"
-BEST_CHECKPOINT_FILE = "checkpoints/BEST_CHECKPOINT.txt"
-MAX_ENCODER_LENGTH = 30
-PRED_HORIZON = 7
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 st.write(f"Using device: {DEVICE}")
@@ -205,13 +206,14 @@ if not checkpoint_path or not os.path.exists(checkpoint_path):
     st.stop()
 
 
-tft_model = TemporalFusionTransformer.from_dataset(training)
-best_model = TftLightning.load_from_checkpoint(checkpoint_path, model=tft_model).to(DEVICE)
+# tft_model = TemporalFusionTransformer.from_dataset(training)
+tft = build_model(training, MAX_ENCODER_LENGTH, PRED_HORIZON, QUANTILES)
+best_model = TftLightning.load_from_checkpoint(checkpoint_path, model=tft).to(DEVICE)
 best_model.eval()
 
 
 # ------------------ Streamlit UI ------------------
-st.title("7-Day Sales Forecast Dashboard (Validation)")
+st.title(f"{PRED_HORIZON}-Day Sales Forecast Dashboard (Validation)")
 
 store_ids = data["store_id"].unique()
 selected_store = st.selectbox("Select store_id", store_ids)

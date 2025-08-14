@@ -23,8 +23,8 @@ This project simulates daily sales for **InnovateMart** stores and trains a **Te
 
 ---
 
-## Screenshot
-![UI Screenshot](data/UI.png)  
+## web page
+![UI Screenshot](data/UI_1.png)  
 ---
 
 ## Installation(Step1)
@@ -47,6 +47,45 @@ torch, pytorch-lightning
 pytorch-forecasting
 
 
+## Configuration (`config.py`)
+
+The `config.py` file contains all the customizable parameters for the project.  
+It is divided into three main sections:
+
+### 1. `cities`
+A dictionary mapping city names to their population.  
+This can be used for data filtering, scaling, or population-based analysis.
+
+**Example:**
+```python
+cities = {
+    "Tehran": 8846782,
+    "Isfahan": 1570860,
+    ...
+}
+### 2. public_cfg
+General configuration settings for data paths, model parameters, and date ranges.
+
+* DATA_PATH:	Directory containing input CSV files or datasets	default = "data"
+* BEST_CHECKPOINT_FILE:	Directory where the trained model checkpoint is saved	default =  "checkpoints"
+* NUM_STORES:	Number of stores or data series used for training	default = 5
+* START_DATE:	First date in the dataset (format: YYYY-MM-DD)	default = "2022-01-01"
+* END_DATE:	Last date in the dataset (format: YYYY-MM-DD)	default = "2024-12-31"
+* COMPETITOR_DATE:	Date when competitor data starts affecting the model	default = "2023-06-15"
+* MAX_ENCODER_LENGTH:	Number of past time steps the model sees during training	default = 30
+* PRED_HORIZON:	Number of future time steps the model predicts	default = 7
+### Notice
+You can change config.py to create data and model without using argparser, but if you want spesific data or model you can using argparser
+### 3. train_cfg
+Training-related settings such as dataset split, batch size, and epochs.
+
+TRAIN_RATIO:	Fraction of the dataset used for training (rest is validation/test)	default = 0.8
+BATCH_SIZE:	Number of samples per training batch	default = 512
+MAX_EPOCHS:	Maximum number of training epochs	default = 2
+Usage:
+Changing these values in config.py will automatically update the behavior of both the training script and the prediction (streaming) script without modifying their code.
+
+
 ## Simulate Sales Data(Step2)
 ``` bash
 python generate_data.py --n_stores 5 --start_date 2022-01-01 --end_date 2024-12-31 --save ./data
@@ -56,6 +95,9 @@ python generate_data.py --n_stores 5 --start_date 2022-01-01 --end_date 2024-12-
 * --start_date & --end_date : Simulation date range
 * --save : Path to save generated data
 
+You can see image of store in save folder
+
+![store Screenshot](data/UI.png)  
 
 ## Train TFT Model(Step3)
 ``` bash

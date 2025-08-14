@@ -4,7 +4,7 @@ import pandas as pd
 import random
 import matplotlib.pyplot as plt
 import argparse
-from config import cities
+from config import cities, public_cfg
 
 RANDOM_SEED = 123
 np.random.seed(RANDOM_SEED)
@@ -291,11 +291,11 @@ class InnovateMart:
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser(description="Simulate InnovateMart sales data")
-    parser.add_argument("--n_stores", type=int, default=5, help="Number of stores to simulate (default: 5)")
-    parser.add_argument("--start_date", type=str, default="2022-01-01", help="Start date for simulation (YYYY-MM-DD)")
-    parser.add_argument("--end_date", type=str, default="2024-12-31", help="End date for simulation (YYYY-MM-DD)")
-    parser.add_argument("--competitor_date", type=str, default="2023-06-15", help="Competitor opening date (YYYY-MM-DD)")
-    parser.add_argument("--save", type=str, default="./data", help="Path of save csvs and images")
+    parser.add_argument("--n_stores", type=int, default=public_cfg["NUM_STORES"], help="Number of stores to simulate (default: 5)")
+    parser.add_argument("--start_date", type=str, default=public_cfg["START_DATE"], help="Start date for simulation (YYYY-MM-DD)")
+    parser.add_argument("--end_date", type=str, default=public_cfg["END_DATE"], help="End date for simulation (YYYY-MM-DD)")
+    parser.add_argument("--competitor_date", type=str, default=public_cfg["COMPETITOR_DATE"], help="Competitor opening date (YYYY-MM-DD)")
+    parser.add_argument("--save", type=str, default=public_cfg['DATA_PATH'], help="Path of save csvs and images")
 
     args = parser.parse_args()
     n_stores = args.n_stores
