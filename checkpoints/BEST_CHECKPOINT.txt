@@ -1,0 +1,1 @@
+/content/drive/MyDrive/Colab Notebooks/TataMarcket/checkpoints/best-model-epoch=72-val_loss=407376.5625.ckpt

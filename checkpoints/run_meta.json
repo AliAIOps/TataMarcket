@@ -1,0 +1,44 @@
+{
+  "encoder_len": 30,
+  "pred_len": 7,
+  "train_ratio": 0.8,
+  "categoricals": {
+    "static": [
+      "store_id",
+      "store_size"
+    ],
+    "time_varying_known": [
+      "day_of_week",
+      "month",
+      "is_weekend",
+      "promotion_active",
+      "holiday_flag",
+      "school_holiday_flag",
+      "competitor_opened_flag"
+    ]
+  },
+  "reals": {
+    "static": [
+      "city_population",
+      "base_mean",
+      "annual_growth_rate",
+      "competitor_impact"
+    ],
+    "time_varying_known": [
+      "time_idx",
+      "competitor_impact"
+    ],
+    "time_varying_unknown": [
+      "daily_sales"
+    ]
+  },
+  "quantiles": [
+    0.1,
+    0.5,
+    0.9
+  ],
+  "target": "daily_sales",
+  "group_ids": [
+    "store_id"
+  ]
+}
