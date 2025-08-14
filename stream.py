@@ -205,7 +205,7 @@ if not checkpoint_path or not os.path.exists(checkpoint_path):
     st.warning("Valid checkpoint path required!")
     st.stop()
 
-
+checkpoint_path = checkpoint_path[checkpoint_path.find(public_cfg["BEST_CHECKPOINT_FILE" ]):]
 # tft_model = TemporalFusionTransformer.from_dataset(training)
 tft = build_model(training, MAX_ENCODER_LENGTH, PRED_HORIZON, QUANTILES)
 best_model = TftLightning.load_from_checkpoint(checkpoint_path, model=tft).to(DEVICE)
