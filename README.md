@@ -75,17 +75,20 @@ General configuration settings for data paths, model parameters, and date ranges
 * COMPETITOR_DATE:	Date when competitor data starts affecting the model	default = "2023-06-15"
 * MAX_ENCODER_LENGTH:	Number of past time steps the model sees during training	default = 30
 * PRED_HORIZON:	Number of future time steps the model predicts	default = 7
-### Notice
-You can change config.py to create data and model without using argparser, but if you want spesific data or model you can using argparser
+
 ### 3. train_cfg
 Training-related settings such as dataset split, batch size, and epochs.
 
-TRAIN_RATIO:	Fraction of the dataset used for training (rest is validation/test)	default = 0.8
-BATCH_SIZE:	Number of samples per training batch	default = 512
-MAX_EPOCHS:	Maximum number of training epochs	default = 2
+* TRAIN_RATIO:	Fraction of the dataset used for training (rest is validation/test)	default = 0.8
+* BATCH_SIZE:	Number of samples per training batch	default = 512
+* MAX_EPOCHS:	Maximum number of training epochs	default = 2
 Usage:
 Changing these values in config.py will automatically update the behavior of both the training script and the prediction (streaming) script without modifying their code.
 
+### Notice
+You can change config.py to create data and model without using argparser, but if you want spesific data or model you can using argparser
+
+------
 
 ## Simulate Sales Data(Step2)
 ``` bash
