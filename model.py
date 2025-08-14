@@ -11,7 +11,7 @@ daily sales data. It:
   - Saves the best checkpoint to disk.
 
 Run:
-    python train_model.py --data_path data/simulated_innovatemart_daily_sales.csv \
+    python model.py --data_path data/simulated_innovatemart_daily_sales.csv \
                           --save_dir checkpoints \
                           --encoder_len 30 \
                           --pred_len 7 \
